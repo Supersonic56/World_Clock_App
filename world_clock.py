@@ -2,9 +2,10 @@ import tkinter as tk
 from datetime import datetime
 import pytz
 import time
+import requests
 
 # Define the time zones
-time_zones = ['Australia/Sydney', 'Asia/Tokyo', 'Asia/Singapore', 'Asia/Seoul', 'Europe/London', 'America/New_York', 'America/Los_Angeles']
+time_zones = ['Australia/Sydney', 'Asia/Tokyo', 'Asia/Singapore', 'Europe/London', 'America/New_York', 'America/Los_Angeles']
 
 def update_times():
     for i, tz in enumerate(time_zones):
@@ -16,6 +17,13 @@ def update_times():
         labels[i].config(text=f'{tz.split("/")[-1]}: {time_str}')
     # Schedule the function to run again after 1 second
     root.after(1000, update_times)
+
+        # Get the current Bitcoin price
+    response = requests.get('https://api.coindesk.com/v1/bpi/currentprice/BTC.json')
+    data = response.json()
+    price = data['bpi']['USD']['rate']
+    # Update the Bitcoin label
+    bitcoin_label.config(text=f'Bitcoin: ${price}')
 
 # Create the main window
 root = tk.Tk()
@@ -29,6 +37,10 @@ labels = [tk.Label(root, font=('Helvetica', 20),
 # Set the text color to green and the background color to black
 for label in labels:
     label.pack()
+
+    # Create a label for the Bitcoin price
+bitcoin_label = tk.Label(root, font=('Helvetica', 20), foreground='grey', background='black')
+bitcoin_label.pack()
 
 # Start the clock
 update_times()
