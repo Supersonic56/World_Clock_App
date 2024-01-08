@@ -20,9 +20,13 @@ def update_times():
 # Create the main window
 root = tk.Tk()
 root.title('World Clock')
+root.configure(background='black')  # Set the background color of the window to black
 
 # Create a label for each time zone
-labels = [tk.Label(root, font=('Helvetica', 20)) for _ in time_zones]
+labels = [tk.Label(root, font=('Helvetica', 20), 
+                   foreground='green', background='black') 
+                   for _ in time_zones]
+# Set the text color to green and the background color to black
 for label in labels:
     label.pack()
 
